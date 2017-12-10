@@ -1,3 +1,12 @@
 <resources>
-    <string name="app_name">Test App for Internet Fregat</string>
+    <!--Название приложения-->
+    <string name="app_name">Веник каждому</string>
+
+    <!--Строки для карточки пользователя-->
+    <string name="user_card_name">Имя:</string>
+    <string name="user_card_second_name">Фамилия:</string>
+    <string name="user_card_patronymic">Отчество:</string>
+    <string name="user_card_address">Адрес:</string>
+    <string name="user_card_date_of_birth">Дата рождения:</string>
+    <string name="user_card_photo">Фото:</string>
 </resources>

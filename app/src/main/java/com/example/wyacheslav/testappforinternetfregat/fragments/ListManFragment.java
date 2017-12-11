@@ -2,6 +2,7 @@ package com.example.wyacheslav.testappforinternetfregat.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -49,6 +50,9 @@ public class ListManFragment extends Fragment {
         // Инициализация адаптера
         recyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager());
 
+        // FAB добавления человека
+        FloatingActionButton floatingActionButtonAddMan = rootView.findViewById(R.id.fab_add_man);
+
         // Список людей
         RecyclerView recyclerViewMans = rootView.findViewById(R.id.rv_mans);
 
@@ -59,6 +63,14 @@ public class ListManFragment extends Fragment {
         recyclerViewMans.setLayoutManager(layoutManager);
         recyclerViewMans.setItemAnimator(itemAnimator);
 
+        // Обработчик нажатия на кнопку добавить человека
+        floatingActionButtonAddMan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Открытие фрагмента с добавлением клиента
+                getFragmentManager().beginTransaction().replace(R.id.fl_container, new CardManFragment()).addToBackStack(null).commit();
+            }
+        });
         return rootView;
     }
 }

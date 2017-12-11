@@ -30,4 +30,6 @@ dependencies {
 
     // Поля ввода текста
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support:design:27.0.2'
 }

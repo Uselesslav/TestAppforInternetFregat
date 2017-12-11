@@ -68,7 +68,7 @@ public class ListManFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Открытие фрагмента с добавлением клиента
-                getFragmentManager().beginTransaction().replace(R.id.fl_container, new CardManFragment()).addToBackStack(null).commit();
+                getFragmentManager().beginTransaction().replace(R.id.fl_container, new AddManFragment()).addToBackStack(null).commit();
             }
         });
         return rootView;

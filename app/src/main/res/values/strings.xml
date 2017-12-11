@@ -12,5 +12,6 @@
     <string name="user_card_photo">Фото:</string>
     <string name="user_card_number_of_brooms">Количество веников:</string>
     <string name="edit">Редактировать</string>
+    <string name="save">Сохранить</string>
     <string name="add">Добавить</string>
 </resources>

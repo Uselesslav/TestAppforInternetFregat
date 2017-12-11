@@ -63,11 +63,11 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/button_edit"
+        android:id="@+id/button_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:gravity="center"
-        android:text="@string/save"
+        android:text="@string/add"
         tools:ignore="RtlHardcoded" />
 </LinearLayout>

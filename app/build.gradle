@@ -27,4 +27,7 @@ dependencies {
 
     // Библиотека для использования RecyclerView
     compile 'com.android.support:recyclerview-v7:27.0.2'
+
+    // Поля ввода текста
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
 }

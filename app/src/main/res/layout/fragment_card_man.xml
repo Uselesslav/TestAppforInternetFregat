@@ -1,10 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/wheat"
+    android:layout_margin="32dp"
     android:clickable="true"
-    android:focusable="true"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/user_card_full_name"
+        android:textSize="20sp" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/et_full_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/user_card_address"
+        android:textSize="20sp" />
+
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/et_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/user_card_number_of_brooms"
+        android:textSize="20sp" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/et_number_of_brooms"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="@string/user_card_date_of_birth"
+        android:textSize="20sp" />
+
+    <com.rengwuxian.materialedittext.MaterialEditText
+        android:id="@+id/et_date_of_birth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/button_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="center"
+        android:text="@string/edit"
+        tools:ignore="RtlHardcoded" />
 </LinearLayout>

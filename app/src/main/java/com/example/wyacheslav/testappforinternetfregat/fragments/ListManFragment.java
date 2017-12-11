@@ -47,7 +47,7 @@ public class ListManFragment extends Fragment {
         mManModelsList = new ArrayList<>();
 
         // Инициализация адаптера
-        recyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList);
+        recyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager());
 
         // Список людей
         RecyclerView recyclerViewMans = rootView.findViewById(R.id.rv_mans);

@@ -1,5 +1,6 @@
 package com.example.wyacheslav.testappforinternetfregat.adapters;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
+import com.example.wyacheslav.testappforinternetfregat.fragments.CardManFragment;
 import com.example.wyacheslav.testappforinternetfregat.models.ManModel;
 
 import java.util.List;
@@ -20,6 +22,11 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
      * Список людей
      */
     private List<ManModel> mManModels;
+
+    /**
+     * Менеджер фрагментов
+     */
+    private FragmentManager mFragmentManager;
 
     /**
      * Внутренний класс элемента списка
@@ -41,8 +48,9 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    public RecyclerViewListManAdapter(List<ManModel> manModels) {
+    public RecyclerViewListManAdapter(List<ManModel> manModels, FragmentManager fragmentManager) {
         mManModels = manModels;
+        mFragmentManager = fragmentManager;
     }
 
     @Override
@@ -53,8 +61,17 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        // Заполнение текстового поля элемента
         holder.getTextViewFullName().setText(mManModels.get(position).getFullName());
 
+        // Обработчик нажатия на элемент
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Открытие карточки человека
+                mFragmentManager.beginTransaction().replace(R.id.fl_container, new CardManFragment()).addToBackStack(null).commit();
+            }
+        });
     }
 
     @Override

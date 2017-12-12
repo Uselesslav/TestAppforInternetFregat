@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
@@ -59,6 +60,10 @@ public class ListManFragment extends Fragment {
         // Информационная строка
         TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
 
+        // Поле ввода и кнопка для поиска
+        TextView textViewFind = rootView.findViewById(R.id.tv_find);
+        final EditText editTextFind = rootView.findViewById(R.id.et_find);
+
         // Если список пуст, вывести строку
         if (mManModelsList.isEmpty()) {
             textViewEmptyList.setVisibility(View.VISIBLE);
@@ -85,6 +90,14 @@ public class ListManFragment extends Fragment {
             public void onClick(View v) {
                 // Открытие фрагмента с добавлением клиента
                 getFragmentManager().beginTransaction().replace(R.id.fl_container, new AddManFragment()).addToBackStack(null).commit();
+            }
+        });
+
+        // Обработчик нажатия на кнопку "Найти"
+        textViewFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
         return rootView;

@@ -1,5 +1,6 @@
 package com.example.wyacheslav.testappforinternetfregat.adapters;
 
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -60,7 +61,7 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         // Заполнение текстового поля элемента
         holder.getTextViewFullName().setText(mManModels.get(position).getFullName());
 
@@ -68,8 +69,16 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Контейнер, передающий id элемента во фрагмент
+                Bundle bundle = new Bundle();
+                bundle.putInt("position", position + 1);
+
+                // Инициализация и отправка значений
+                CardManFragment cardManFragment = new CardManFragment();
+                cardManFragment.setArguments(bundle);
+
                 // Открытие карточки человека
-                mFragmentManager.beginTransaction().replace(R.id.fl_container, new CardManFragment()).addToBackStack(null).commit();
+                mFragmentManager.beginTransaction().replace(R.id.fl_container, cardManFragment).addToBackStack(null).commit();
             }
         });
     }

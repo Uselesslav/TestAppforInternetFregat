@@ -24,6 +24,10 @@ public class CardManFragment extends Fragment {
         // Создаваемый View
         View rootView = inflater.inflate(R.layout.fragment_card_man, container, false);
 
+        // id элемента в БД
+        int position = getArguments().getInt("position");
+
         return rootView;
     }
 }
+

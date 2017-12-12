@@ -30,4 +30,7 @@ dependencies {
     implementation 'com.android.support:design:27.0.2'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
     compile 'com.android.support:recyclerview-v7:27.0.2'
+
+    // Eventbus - работа с событиями
+    compile 'org.greenrobot:eventbus:3.0.0'
 }

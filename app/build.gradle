@@ -36,4 +36,7 @@ dependencies {
 
     // Валидатор
     compile 'com.mobsandgeeks:android-saripaar:1.0.0'
+
+    // Круглые ImageView
+    compile 'de.hdodenhof:circleimageview:2.1.0'
 }

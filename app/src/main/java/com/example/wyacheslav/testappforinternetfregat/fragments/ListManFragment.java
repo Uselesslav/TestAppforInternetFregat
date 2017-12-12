@@ -48,7 +48,7 @@ public class ListManFragment extends Fragment {
         // Инициализация массива людей
         mManModelsList = new ArrayList<>();
 
-        ManModel man = new ManModel();
+        ManModel man = new ManModel(getContext());
         man.setSecondName("ffsa");
 
         mManModelsList.add(man);

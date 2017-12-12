@@ -14,6 +14,8 @@ import com.example.wyacheslav.testappforinternetfregat.models.ManModel;
 
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 /**
  * Адаптер списка людей
  * Created by wyacheslav on 11.12.17.
@@ -34,10 +36,12 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
      */
     static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewFullName;
+        private CircleImageView circleImageViewIconMan;
 
         ViewHolder(View v) {
             super(v);
             textViewFullName = itemView.findViewById(R.id.tv_full_name);
+            circleImageViewIconMan = itemView.findViewById(R.id.civ_icon_man);
         }
 
         TextView getTextViewFullName() {
@@ -45,6 +49,14 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         void setTextViewFullName(TextView textViewFullName) {
+            this.textViewFullName = textViewFullName;
+        }
+
+        CircleImageView getCircleImageViewIconMan() {
+            return circleImageViewIconMan;
+        }
+
+        void setCircleImageViewIconMan(CircleImageView circleImageViewIconMan) {
             this.textViewFullName = textViewFullName;
         }
     }
@@ -64,6 +76,9 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
     public void onBindViewHolder(ViewHolder holder, final int position) {
         // Заполнение текстового поля элемента
         holder.getTextViewFullName().setText(mManModels.get(position).getFullName());
+
+        // Заполнение картинки
+        holder.getCircleImageViewIconMan().setImageBitmap(mManModels.get(position).getBitmapIcon());
 
         // Обработчик нажатия на элемент
         holder.itemView.setOnClickListener(new View.OnClickListener() {

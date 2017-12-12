@@ -33,4 +33,7 @@ dependencies {
 
     // Eventbus - работа с событиями
     compile 'org.greenrobot:eventbus:3.0.0'
+
+    // Валидатор
+    compile 'com.mobsandgeeks:android-saripaar:1.0.0'
 }

@@ -16,4 +16,5 @@
     <string name="save">Сохранить</string>
     <string name="empty_list">Список пуст</string>
     <string name="add">Добавить</string>
+    <string name="required_field">Обязательное поле</string>
 </resources>

@@ -48,6 +48,14 @@ public class ListManFragment extends Fragment {
         // Инициализация массива людей
         mManModelsList = new ArrayList<>();
 
+        ManModel man = new ManModel();
+        man.setSecondName("ffsa");
+
+        mManModelsList.add(man);
+        mManModelsList.add(man);
+        mManModelsList.add(man);
+        mManModelsList.add(man);
+
         // Информационная строка
         TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
 

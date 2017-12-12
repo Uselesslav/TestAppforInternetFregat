@@ -9,9 +9,11 @@
     <string name="user_card_patronymic">Отчество:</string>
     <string name="user_card_address">Адрес:</string>
     <string name="user_card_date_of_birth">Дата рождения:</string>
+    <string name="user_card_input_dob">Введите дату рождения</string>
     <string name="user_card_photo">Фото:</string>
     <string name="user_card_number_of_brooms">Количество веников:</string>
     <string name="edit">Редактировать</string>
     <string name="save">Сохранить</string>
+    <string name="empty_list">Список пуст</string>
     <string name="add">Добавить</string>
 </resources>

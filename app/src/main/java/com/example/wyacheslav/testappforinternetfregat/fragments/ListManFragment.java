@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.adapters.RecyclerViewListManAdapter;
@@ -47,6 +48,13 @@ public class ListManFragment extends Fragment {
         // Инициализация массива людей
         mManModelsList = new ArrayList<>();
 
+        // Информационная строка
+        TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
+
+        // Если список пуст, вывести строку
+        if (mManModelsList.isEmpty()) {
+            textViewEmptyList.setVisibility(View.VISIBLE);
+        }
         // Инициализация адаптера
         recyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager());
 

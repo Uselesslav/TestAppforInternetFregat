@@ -1,9 +1,18 @@
 package com.example.wyacheslav.testappforinternetfregat;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.example.wyacheslav.testappforinternetfregat.events.SetIconEvent;
 import com.example.wyacheslav.testappforinternetfregat.fragments.ListManFragment;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
     @Override
@@ -12,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Открытие фрагмента списка людей
-        getSupportFragmentManager().beginTransaction().add(R.id.fl_container, new ListManFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fl_container, new ListManFragment()).commit();
     }
 
     /**
@@ -27,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
         } else {
             // Закрытие активити
             this.finish();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            try {
+                // Создание события смены картинки
+                EventBus.getDefault().post(new SetIconEvent(MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData())));
+            } catch (IOException e) {
+                Log.i("TAG", "Some exception " + e);
+            }
         }
     }
 }

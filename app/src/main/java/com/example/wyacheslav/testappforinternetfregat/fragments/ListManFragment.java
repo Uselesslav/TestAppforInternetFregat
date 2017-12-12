@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.adapters.RecyclerViewListManAdapter;
-import com.example.wyacheslav.testappforinternetfregat.models.ManModel;
+import com.example.wyacheslav.testappforinternetfregat.models.Man;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class ListManFragment extends Fragment {
     /**
      * Массив людей
      */
-    private List<ManModel> mManModelsList;
+    private List<Man> mManModelsList;
 
     /**
      * Адаптер списка
@@ -49,7 +49,7 @@ public class ListManFragment extends Fragment {
         // Инициализация массива людей
         mManModelsList = new ArrayList<>();
 
-        ManModel man = new ManModel(getContext());
+        Man man = new Man(getContext());
         man.setSecondName("ffsa");
 
         mManModelsList.add(man);

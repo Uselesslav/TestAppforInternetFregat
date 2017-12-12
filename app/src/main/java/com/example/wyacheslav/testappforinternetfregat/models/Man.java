@@ -5,18 +5,23 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
+import com.j256.ormlite.field.DataType;
+import com.j256.ormlite.field.DatabaseField;
+import com.j256.ormlite.table.DatabaseTable;
 
 /**
  * Класс человека
  * Created by wyacheslav on 11.12.17.
  */
-public class ManModel {
+@DatabaseTable(tableName = "mans")
+public class Man {
     /**
-     *
+     * Класс, используемый для получения BitMap
      */
     private Context context;
 
     /**
+     * id
      * Имя
      * Фамилия
      * Отчество
@@ -25,20 +30,43 @@ public class ManModel {
      * Фото
      * Количество заказанных веников пользователя
      */
+    @DatabaseField(generatedId = true)
+    private int id;
+
+    @DatabaseField(canBeNull = false, dataType = DataType.STRING)
     private String name;
+
+    @DatabaseField(dataType = DataType.STRING)
     private String secondName;
+
+    @DatabaseField(dataType = DataType.STRING)
     private String patronymic;
+
+    @DatabaseField(dataType = DataType.STRING)
     private String dateOfBirth;
+
+    @DatabaseField(dataType = DataType.STRING)
     private String Address;
+
+    @DatabaseField(dataType = DataType.STRING)
     private String Photo;
+
+    @DatabaseField(dataType = DataType.INTEGER)
     private int numberOfBrooms;
 
-    public ManModel(Context context) {
+    public Man() {
+    }
+
+    public Man(Context context) {
         this.context = context;
     }
 
     public String getFullName() {
         return isNullString(getSecondName()) + " " + isNullString(getName()) + " " + isNullString(getPatronymic());
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

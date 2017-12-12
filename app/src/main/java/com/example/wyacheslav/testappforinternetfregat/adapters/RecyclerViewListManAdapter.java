@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.fragments.CardManFragment;
-import com.example.wyacheslav.testappforinternetfregat.models.ManModel;
+import com.example.wyacheslav.testappforinternetfregat.models.Man;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
     /**
      * Список людей
      */
-    private List<ManModel> mManModels;
+    private List<Man> mManModels;
 
     /**
      * Менеджер фрагментов
@@ -61,7 +61,7 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
         }
     }
 
-    public RecyclerViewListManAdapter(List<ManModel> manModels, FragmentManager fragmentManager) {
+    public RecyclerViewListManAdapter(List<Man> manModels, FragmentManager fragmentManager) {
         mManModels = manModels;
         mFragmentManager = fragmentManager;
     }

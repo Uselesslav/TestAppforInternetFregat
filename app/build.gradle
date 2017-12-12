@@ -39,4 +39,7 @@ dependencies {
 
     // Круглые ImageView
     compile 'de.hdodenhof:circleimageview:2.1.0'
+
+    // ORM ORMLite
+    compile group: 'com.j256.ormlite', name: 'ormlite-android', version: '5.0'
 }

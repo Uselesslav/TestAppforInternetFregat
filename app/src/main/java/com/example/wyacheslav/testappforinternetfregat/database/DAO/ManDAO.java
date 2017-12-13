@@ -30,4 +30,11 @@ public class ManDAO extends BaseDaoImpl<Man, Integer> {
         List<Man> manList = query(preparedQuery);
         return manList;
     }
+
+    public Man getManByID(int id) throws SQLException {
+        QueryBuilder<Man, Integer> queryBuilder = queryBuilder();
+        queryBuilder.where().eq("id", id);
+        Man man = query(queryBuilder.prepare()).get(0);
+        return man;
+    }
 }

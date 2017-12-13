@@ -123,13 +123,17 @@ public class Man {
         // TODO: доработать метод
         Bitmap bitmap = null;
         if (bitmap == null) {
-          //  bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+            //  bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
         }
         return bitmap;
     }
 
-    public int getNumberOfBrooms() {
+    public int getNumberOfBroomsInt() {
         return numberOfBrooms;
+    }
+
+    public String getNumberOfBroomsString() {
+        return Integer.toString(numberOfBrooms);
     }
 
     public void setNumberOfBrooms(int numberOfBrooms) {

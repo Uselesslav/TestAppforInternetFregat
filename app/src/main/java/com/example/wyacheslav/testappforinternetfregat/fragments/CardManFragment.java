@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
+import com.example.wyacheslav.testappforinternetfregat.database.HelperFactory;
 import com.example.wyacheslav.testappforinternetfregat.events.SetIconEvent;
+import com.example.wyacheslav.testappforinternetfregat.models.Man;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Required;
@@ -25,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 
 /**
@@ -77,6 +80,13 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         // id элемента в БД
         int position = getArguments().getInt("position");
 
+        Man man = new Man(getContext());
+
+        try {
+            man = HelperFactory.getHelper().getManDAO().getManByID(position);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         // Инициализация валидатора
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
@@ -93,6 +103,13 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         MaterialEditText mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
         mMaterialEditTextAddress = rootView.findViewById(R.id.et_address);
         mMaterialEditTextNumberOfBroom = rootView.findViewById(R.id.et_number_of_brooms);
+
+        textViewDOB.setText(man.getDateOfBirth());
+        mMaterialEditTextName.setText(man.getName());
+        mMaterialEditTextSecondName.setText(man.getSecondName());
+        mMaterialEditTextPatronymic.setText(man.getPatronymic());
+        mMaterialEditTextAddress.setText(man.getAddress());
+        mMaterialEditTextNumberOfBroom.setText(man.getNumberOfBroomsString());
 
         // Обработка нажатия на текстовое поле
         textViewDOB.setOnClickListener(new View.OnClickListener() {

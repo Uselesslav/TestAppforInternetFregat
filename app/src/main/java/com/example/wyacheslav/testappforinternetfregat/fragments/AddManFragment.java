@@ -1,6 +1,7 @@
 package com.example.wyacheslav.testappforinternetfregat.fragments;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -157,6 +159,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         man.setName(mMaterialEditTextName.getText().toString());
         man.setSecondName(mMaterialEditTextSecondName.getText().toString());
         man.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
+        man.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
         // TODO: Добавить обработку
         man.setPhoto("fff");
         try {
@@ -165,6 +168,12 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
             e.printStackTrace();
         }
         getFragmentManager().popBackStack();
+
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Override

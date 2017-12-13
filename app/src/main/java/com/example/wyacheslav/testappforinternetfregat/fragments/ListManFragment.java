@@ -15,8 +15,10 @@ import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.adapters.RecyclerViewListManAdapter;
+import com.example.wyacheslav.testappforinternetfregat.database.HelperFactory;
 import com.example.wyacheslav.testappforinternetfregat.models.Man;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,13 +51,11 @@ public class ListManFragment extends Fragment {
         // Инициализация массива людей
         mManModelsList = new ArrayList<>();
 
-        Man man = new Man(getContext());
-        man.setSecondName("ffsa");
-
-        mManModelsList.add(man);
-        mManModelsList.add(man);
-        mManModelsList.add(man);
-        mManModelsList.add(man);
+        try {
+            mManModelsList.addAll(HelperFactory.getHelper().getManDAO().getAllMan());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         // Информационная строка
         TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);

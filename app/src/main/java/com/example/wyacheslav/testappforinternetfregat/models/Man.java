@@ -2,9 +2,7 @@ package com.example.wyacheslav.testappforinternetfregat.models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
-import com.example.wyacheslav.testappforinternetfregat.R;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
@@ -19,6 +17,10 @@ public class Man {
      * Класс, используемый для получения BitMap
      */
     private Context context;
+    /**
+     * Строка с названием столбца
+     */
+    public final static String MAN_NAME_FIELD_NAME = "name";
 
     /**
      * id
@@ -33,7 +35,7 @@ public class Man {
     @DatabaseField(generatedId = true)
     private int id;
 
-    @DatabaseField(canBeNull = false, dataType = DataType.STRING)
+    @DatabaseField(canBeNull = false, dataType = DataType.STRING, columnName = MAN_NAME_FIELD_NAME)
     private String name;
 
     @DatabaseField(dataType = DataType.STRING)
@@ -121,7 +123,7 @@ public class Man {
         // TODO: доработать метод
         Bitmap bitmap = null;
         if (bitmap == null) {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+          //  bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
         }
         return bitmap;
     }

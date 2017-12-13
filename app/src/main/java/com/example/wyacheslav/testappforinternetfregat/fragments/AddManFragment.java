@@ -15,7 +15,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
+import com.example.wyacheslav.testappforinternetfregat.database.HelperFactory;
 import com.example.wyacheslav.testappforinternetfregat.events.SetIconEvent;
+import com.example.wyacheslav.testappforinternetfregat.models.Man;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Required;
@@ -25,6 +27,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.sql.SQLException;
 import java.util.Calendar;
 
 /**
@@ -58,6 +61,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     private MaterialEditText mMaterialEditTextNumberOfBroom;
     @Required(order = 1)
     private MaterialEditText mMaterialEditTextAddress;
+    private MaterialEditText mMaterialEditTextPatronymic;
 
     /**
      * Валидатор
@@ -87,7 +91,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         imageViewIconProfile = rootView.findViewById(R.id.iv_icon);
         mMaterialEditTextName = rootView.findViewById(R.id.et_name);
         mMaterialEditTextSecondName = rootView.findViewById(R.id.et_second_name);
-        MaterialEditText mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
+        mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
         mMaterialEditTextAddress = rootView.findViewById(R.id.et_address);
         mMaterialEditTextNumberOfBroom = rootView.findViewById(R.id.et_number_of_brooms);
 
@@ -128,9 +132,6 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
             @Override
             public void onClick(View v) {
                 mValidator.validate();
-                if (!mValidator.isValidating()) {
-                    return;
-                }
             }
         });
         return rootView;
@@ -150,6 +151,20 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
 
     @Override
     public void onValidationSucceeded() {
+        Man man = new Man(getContext());
+        man.setAddress(mMaterialEditTextAddress.getText().toString());
+        man.setDateOfBirth(mCalendarDateOfBirth.toString());
+        man.setName(mMaterialEditTextName.getText().toString());
+        man.setSecondName(mMaterialEditTextSecondName.getText().toString());
+        man.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
+        // TODO: Добавить обработку
+        man.setPhoto("fff");
+        try {
+            HelperFactory.getHelper().getManDAO().create(man);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        getFragmentManager().popBackStack();
     }
 
     @Override

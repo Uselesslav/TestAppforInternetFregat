@@ -3,6 +3,8 @@ package com.example.wyacheslav.testappforinternetfregat.database.DAO;
 
 import com.example.wyacheslav.testappforinternetfregat.models.Man;
 import com.j256.ormlite.dao.BaseDaoImpl;
+import com.j256.ormlite.stmt.PreparedQuery;
+import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.support.ConnectionSource;
 
 import java.sql.SQLException;
@@ -17,7 +19,15 @@ public class ManDAO extends BaseDaoImpl<Man, Integer> {
         super(connectionSource, dataClass);
     }
 
-    public List<Man> getAllRoles() throws SQLException {
+    public List<Man> getAllMan() throws SQLException {
         return this.queryForAll();
+    }
+
+    public List<Man> getManByName(String name) throws SQLException {
+        QueryBuilder<Man, Integer> queryBuilder = queryBuilder();
+        queryBuilder.where().eq(Man.MAN_NAME_FIELD_NAME, name);
+        PreparedQuery<Man> preparedQuery = queryBuilder.prepare();
+        List<Man> manList = query(preparedQuery);
+        return manList;
     }
 }

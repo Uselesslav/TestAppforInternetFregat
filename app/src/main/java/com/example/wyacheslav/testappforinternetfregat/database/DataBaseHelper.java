@@ -13,19 +13,28 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 
 /**
+ * Класс, для работы с БД
  * Created by wyacheslav on 13.12.17.
  */
 public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
-
+    /**
+     * Строчка тэга
+     */
     private static final String TAG = DataBaseHelper.class.getSimpleName();
 
-    // Имя файла базы данных
+    /**
+     * Имя файла базы данных
+     */
     private static final String DATABASE_NAME = "ormlitedb.db";
 
-    // Считает обновления
+    /**
+     * Счетчик обновлений
+     */
     private static final int DATABASE_VERSION = 1;
 
-    // Ссылка на DAO соответсвующие сущностям, хранимым в БД
+    /**
+     * Ссылка на DAO соответсвующие сущностям, хранимым в БД
+     */
     private ManDAO manDao = null;
 
     public DataBaseHelper(Context context) {
@@ -34,6 +43,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db, ConnectionSource connectionSource) {
+        // Создание БД
         try {
             TableUtils.createTable(connectionSource, Man.class);
         } catch (SQLException e) {
@@ -44,6 +54,7 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, ConnectionSource connectionSource, int oldVer, int newVer) {
+        // Удаление старой и создание новой БД при обновлении
         try {
             TableUtils.dropTable(connectionSource, Man.class, true);
             onCreate(db, connectionSource);
@@ -53,15 +64,15 @@ public class DataBaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    //синглтон для человека
-    public ManDAO getManDAO() throws SQLException {
+    // Синглтон ДАО человека
+    public ManDAO getInstanceManDAO() throws SQLException {
         if (manDao == null) {
             manDao = new ManDAO(getConnectionSource(), Man.class);
         }
         return manDao;
     }
 
-    //При закрытии приложения
+    // При закрытии приложения
     @Override
     public void close() {
         super.close();

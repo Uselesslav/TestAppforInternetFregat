@@ -35,8 +35,7 @@ public class ListManFragment extends Fragment {
     /**
      * Адаптер списка
      */
-    private RecyclerViewListManAdapter recyclerViewClientAdapter;
-
+    private RecyclerViewListManAdapter mRecyclerViewClientAdapter;
 
     /**
      * Переопределение метода родительского класса
@@ -51,38 +50,40 @@ public class ListManFragment extends Fragment {
         // Инициализация массива людей
         mManModelsList = new ArrayList<>();
 
+        // Заполнение массива из БД
         try {
-            mManModelsList.addAll(HelperFactory.getHelper().getManDAO().getAllMan());
+            mManModelsList.addAll(HelperFactory.getHelper().getInstanceManDAO().getAllMan());
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
         // Информационная строка
-        TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
+        final TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
 
         // Поле ввода и кнопка для поиска
         TextView textViewFind = rootView.findViewById(R.id.tv_find);
         final EditText editTextFind = rootView.findViewById(R.id.et_find);
 
-        // Если список пуст, вывести строку
-        if (mManModelsList.isEmpty()) {
-            textViewEmptyList.setVisibility(View.VISIBLE);
-        }
         // Инициализация адаптера
-        recyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager());
+        mRecyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager());
 
         // FAB добавления человека
         FloatingActionButton floatingActionButtonAddMan = rootView.findViewById(R.id.fab_add_man);
 
-        // Список людей
+        // Список
         RecyclerView recyclerViewMans = rootView.findViewById(R.id.rv_mans);
 
-        // Настройки списка
+        // Настройка списка
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-        recyclerViewMans.setAdapter(recyclerViewClientAdapter);
+        recyclerViewMans.setAdapter(mRecyclerViewClientAdapter);
         recyclerViewMans.setLayoutManager(layoutManager);
         recyclerViewMans.setItemAnimator(itemAnimator);
+
+        // Если список пуст, будет выведена строка
+        if (mManModelsList.isEmpty()) {
+            textViewEmptyList.setVisibility(View.VISIBLE);
+        }
 
         // Обработчик нажатия на кнопку добавить человека
         floatingActionButtonAddMan.setOnClickListener(new View.OnClickListener() {
@@ -97,9 +98,33 @@ public class ListManFragment extends Fragment {
         textViewFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Отчистка массива
+                mManModelsList.clear();
 
+                // Заполнение массива из БД
+                try {
+                    mManModelsList
+                            .addAll(HelperFactory
+                                    .getHelper()
+                                    .getInstanceManDAO()
+                                    .getManByName(editTextFind
+                                            .getText()
+                                            .toString()));
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+
+                // Если не найдено соответствий - вывод сообщения
+                if (mManModelsList.isEmpty()) {
+                    textViewEmptyList.setVisibility(View.VISIBLE);
+                    textViewEmptyList.setText(R.string.not_find_result);
+                }
+
+                // Обновление списка
+                mRecyclerViewClientAdapter.notifyDataSetChanged();
             }
         });
+
         return rootView;
     }
 }

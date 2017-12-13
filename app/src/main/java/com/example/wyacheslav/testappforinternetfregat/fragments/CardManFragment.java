@@ -1,6 +1,7 @@
 package com.example.wyacheslav.testappforinternetfregat.fragments;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
@@ -48,7 +50,22 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
     /**
      * Картинка пользователя
      */
-    private ImageView imageViewIconProfile;
+    private ImageView mImageViewIconProfile;
+
+    /**
+     * Контекст
+     */
+    private Context mContext;
+
+    /**
+     * Валидатор
+     */
+    private Validator mValidator;
+
+    /**
+     * Объект человека
+     */
+    private Man mMan;
 
     /**
      * Поля ввода
@@ -61,11 +78,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
     private MaterialEditText mMaterialEditTextNumberOfBroom;
     @Required(order = 1)
     private MaterialEditText mMaterialEditTextAddress;
-
-    /**
-     * Валидатор
-     */
-    private Validator mValidator;
+    private MaterialEditText mMaterialEditTextPatronymic;
 
     /**
      * Переопределение метода родительского класса
@@ -77,16 +90,22 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         // Создаваемый View
         View rootView = inflater.inflate(R.layout.fragment_card_man, container, false);
 
+        // Получение контекста
+        mContext = getContext();
+
         // id элемента в БД
         int position = getArguments().getInt("position");
 
-        Man man = new Man(getContext());
+        // Инициализация человека
+        mMan = new Man(mContext);
 
+        // Создание человека из ДАО объекта
         try {
-            man = HelperFactory.getHelper().getManDAO().getManByID(position);
+            mMan = HelperFactory.getHelper().getInstanceManDAO().getManByID(position);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         // Инициализация валидатора
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
@@ -97,24 +116,26 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         // Поля ввода
         final TextView textViewDOB = rootView.findViewById(R.id.tv_dob);
         final Button buttonEdit = rootView.findViewById(R.id.button_edit);
-        imageViewIconProfile = rootView.findViewById(R.id.iv_icon);
+        mImageViewIconProfile = rootView.findViewById(R.id.iv_icon);
         mMaterialEditTextName = rootView.findViewById(R.id.et_name);
         mMaterialEditTextSecondName = rootView.findViewById(R.id.et_second_name);
-        MaterialEditText mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
+        mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
         mMaterialEditTextAddress = rootView.findViewById(R.id.et_address);
         mMaterialEditTextNumberOfBroom = rootView.findViewById(R.id.et_number_of_brooms);
 
-        textViewDOB.setText(man.getDateOfBirth());
-        mMaterialEditTextName.setText(man.getName());
-        mMaterialEditTextSecondName.setText(man.getSecondName());
-        mMaterialEditTextPatronymic.setText(man.getPatronymic());
-        mMaterialEditTextAddress.setText(man.getAddress());
-        mMaterialEditTextNumberOfBroom.setText(man.getNumberOfBroomsString());
+        // Заполнение полей
+        textViewDOB.setText(mMan.getDateOfBirth());
+        mMaterialEditTextName.setText(mMan.getName());
+        mMaterialEditTextSecondName.setText(mMan.getSecondName());
+        mMaterialEditTextPatronymic.setText(mMan.getPatronymic());
+        mMaterialEditTextAddress.setText(mMan.getAddress());
+        mMaterialEditTextNumberOfBroom.setText(mMan.getNumberOfBroomsString());
 
         // Обработка нажатия на текстовое поле
         textViewDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Создание диалогового окна с выбором даты
                 mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int mouth, int day) {
@@ -128,15 +149,16 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
                     }
                 }, mCalendarDateOfBirth.get(Calendar.YEAR), mCalendarDateOfBirth.get(Calendar.MONTH), mCalendarDateOfBirth.get(Calendar.DAY_OF_MONTH));
 
-                // Показывает диалоговое окно
+                // Открытие диалогового окна
                 mDatePickerDialog.show();
             }
         });
 
         // Обработка нажатия на иконку профиля
-        imageViewIconProfile.setOnClickListener(new View.OnClickListener() {
+        mImageViewIconProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Открытие активити для выбора фото
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, 1);
@@ -148,11 +170,9 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
             @Override
             public void onClick(View v) {
                 mValidator.validate();
-                if (!mValidator.isValidating()) {
-                    return;
-                }
             }
         });
+
         return rootView;
     }
 
@@ -165,19 +185,47 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SetIconEvent event) {
-        imageViewIconProfile.setImageBitmap(event.getBitmapIcon());
+        mImageViewIconProfile.setImageBitmap(event.getBitmapIcon());
     }
 
     @Override
     public void onValidationSucceeded() {
+        // Заполнение информацией из полей
+        mMan.setAddress(mMaterialEditTextAddress.getText().toString());
+        mMan.setDateOfBirth(mCalendarDateOfBirth.toString());
+        mMan.setName(mMaterialEditTextName.getText().toString());
+        mMan.setSecondName(mMaterialEditTextSecondName.getText().toString());
+        mMan.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
+        mMan.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
+        // TODO: Добавить обработку
+        mMan.setPhoto("fff");
+
+        // Создание ДАО человека, для сохранение в БД
+        try {
+            HelperFactory.getHelper().getInstanceManDAO().update(mMan);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Открытие предыдущего фрагмента
+        getFragmentManager().popBackStack();
+
+        // Скрытие клавиатуры
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
-        if (failedView instanceof MaterialEditText) ;
-        MaterialEditText failed = (MaterialEditText) failedView;
-        failed.requestFocus();
-        failed.setError(getText(R.string.required_field));
+        // Вывод сообщения при непройденной валидации
+        if (failedView instanceof MaterialEditText) {
+            MaterialEditText failed = (MaterialEditText) failedView;
+            failed.requestFocus();
+            failed.setError(getText(R.string.required_field));
+        }
     }
 }
 

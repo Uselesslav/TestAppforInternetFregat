@@ -17,5 +17,6 @@
     <string name="empty_list">Список пуст</string>
     <string name="find">искать</string>
     <string name="add">Добавить</string>
+    <string name="not_find_result">Не найдено результатов</string>
     <string name="required_field">Обязательное поле</string>
 </resources>

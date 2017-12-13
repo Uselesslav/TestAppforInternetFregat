@@ -7,6 +7,8 @@ import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.util.Calendar;
+
 /**
  * Класс человека
  * Created by wyacheslav on 11.12.17.
@@ -17,10 +19,18 @@ public class Man {
      * Класс, используемый для получения BitMap
      */
     private Context context;
+
     /**
-     * Строка с названием столбца
+     * Дата рождения
+     */
+    private Calendar calendarDoB = Calendar.getInstance();
+
+    /**
+     * Строки с названиями столбца
      */
     public final static String MAN_NAME_FIELD_NAME = "name";
+    public final static String MAN_NAME_FIELD_SECOND_NAME = "second_name";
+    public final static String MAN_NAME_FIELD_PATRONYMIC = "patronymic";
 
     /**
      * id
@@ -34,28 +44,24 @@ public class Man {
      */
     @DatabaseField(generatedId = true)
     private int id;
-
     @DatabaseField(canBeNull = false, dataType = DataType.STRING, columnName = MAN_NAME_FIELD_NAME)
     private String name;
-
-    @DatabaseField(dataType = DataType.STRING)
+    @DatabaseField(dataType = DataType.STRING, columnName = MAN_NAME_FIELD_SECOND_NAME)
     private String secondName;
-
-    @DatabaseField(dataType = DataType.STRING)
+    @DatabaseField(dataType = DataType.STRING, columnName = MAN_NAME_FIELD_PATRONYMIC)
     private String patronymic;
-
     @DatabaseField(dataType = DataType.STRING)
     private String dateOfBirth;
-
     @DatabaseField(dataType = DataType.STRING)
     private String Address;
-
     @DatabaseField(dataType = DataType.STRING)
     private String Photo;
-
     @DatabaseField(dataType = DataType.INTEGER)
     private int numberOfBrooms;
 
+    /**
+     * Пустой конструктор для ДАО объекта
+     */
     public Man() {
     }
 

@@ -31,36 +31,6 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
      */
     private FragmentManager mFragmentManager;
 
-    /**
-     * Внутренний класс элемента списка
-     */
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewFullName;
-        private CircleImageView circleImageViewIconMan;
-
-        ViewHolder(View v) {
-            super(v);
-            textViewFullName = itemView.findViewById(R.id.tv_full_name);
-            circleImageViewIconMan = itemView.findViewById(R.id.civ_icon_man);
-        }
-
-        TextView getTextViewFullName() {
-            return textViewFullName;
-        }
-
-        void setTextViewFullName(TextView textViewFullName) {
-            this.textViewFullName = textViewFullName;
-        }
-
-        CircleImageView getCircleImageViewIconMan() {
-            return circleImageViewIconMan;
-        }
-
-        void setCircleImageViewIconMan(CircleImageView circleImageViewIconMan) {
-            this.textViewFullName = textViewFullName;
-        }
-    }
-
     public RecyclerViewListManAdapter(List<Man> manModels, FragmentManager fragmentManager) {
         mManModels = manModels;
         mFragmentManager = fragmentManager;
@@ -69,6 +39,7 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public RecyclerViewListManAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.model_man_for_list, parent, false);
+
         return new ViewHolder(v);
     }
 
@@ -101,6 +72,36 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
     @Override
     public int getItemCount() {
         return mManModels.size();
+    }
+
+    /**
+     * Класс элемента списка
+     */
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView textViewFullName;
+        private CircleImageView circleImageViewIconMan;
+
+        ViewHolder(View v) {
+            super(v);
+            textViewFullName = itemView.findViewById(R.id.tv_full_name);
+            circleImageViewIconMan = itemView.findViewById(R.id.civ_icon_man);
+        }
+
+        TextView getTextViewFullName() {
+            return textViewFullName;
+        }
+
+        void setTextViewFullName(TextView textViewFullName) {
+            this.textViewFullName = textViewFullName;
+        }
+
+        CircleImageView getCircleImageViewIconMan() {
+            return circleImageViewIconMan;
+        }
+
+        void setCircleImageViewIconMan(CircleImageView circleImageViewIconMan) {
+            this.textViewFullName = textViewFullName;
+        }
     }
 }
 

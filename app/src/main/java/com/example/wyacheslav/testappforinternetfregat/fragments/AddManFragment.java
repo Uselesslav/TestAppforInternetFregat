@@ -50,7 +50,12 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     /**
      * Картинка пользователя
      */
-    private ImageView imageViewIconProfile;
+    private ImageView mImageViewIconProfile;
+
+    /**
+     * Картинка пользователя
+     */
+    private Context mContext;
 
     /**
      * Поля ввода
@@ -84,13 +89,16 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         mValidator = new Validator(this);
         mValidator.setValidationListener(this);
 
+        // Получение контекста
+        mContext = getContext();
+
         // Подписка на события
         EventBus.getDefault().register(this);
 
         // Поля ввода
         final TextView textViewDOB = rootView.findViewById(R.id.tv_dob);
         final Button buttonAdd = rootView.findViewById(R.id.button_add);
-        imageViewIconProfile = rootView.findViewById(R.id.iv_icon);
+        mImageViewIconProfile = rootView.findViewById(R.id.iv_icon);
         mMaterialEditTextName = rootView.findViewById(R.id.et_name);
         mMaterialEditTextSecondName = rootView.findViewById(R.id.et_second_name);
         mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
@@ -113,16 +121,16 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
                         textViewDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                     }
                 }, mCalendarDateOfBirth.get(Calendar.YEAR), mCalendarDateOfBirth.get(Calendar.MONTH), mCalendarDateOfBirth.get(Calendar.DAY_OF_MONTH));
-
                 // Показывает диалоговое окно
                 mDatePickerDialog.show();
             }
         });
 
         // Обработка нажатия на иконку профиля
-        imageViewIconProfile.setOnClickListener(new View.OnClickListener() {
+        mImageViewIconProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Открытие активити выбора фото
                 Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
                 photoPickerIntent.setType("image/*");
                 startActivityForResult(photoPickerIntent, 1);
@@ -136,6 +144,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
                 mValidator.validate();
             }
         });
+
         return rootView;
     }
 
@@ -148,12 +157,16 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SetIconEvent event) {
-        imageViewIconProfile.setImageBitmap(event.getBitmapIcon());
+        // ПРи срабатывании события получит картинку
+        mImageViewIconProfile.setImageBitmap(event.getBitmapIcon());
     }
 
     @Override
     public void onValidationSucceeded() {
-        Man man = new Man(getContext());
+        // Создание человека
+        Man man = new Man(mContext);
+
+        // Заполнение информацией из полей
         man.setAddress(mMaterialEditTextAddress.getText().toString());
         man.setDateOfBirth(mCalendarDateOfBirth.toString());
         man.setName(mMaterialEditTextName.getText().toString());
@@ -162,13 +175,18 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         man.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
         // TODO: Добавить обработку
         man.setPhoto("fff");
+
+        // Создание ДАО человека, для сохранение в БД
         try {
-            HelperFactory.getHelper().getManDAO().create(man);
+            HelperFactory.getHelper().getInstanceManDAO().create(man);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        // Открытие предыдущего фрагмента
         getFragmentManager().popBackStack();
 
+        // Скрытие клавиатуры
         View view = getActivity().getCurrentFocus();
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -178,10 +196,12 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
 
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
-        if (failedView instanceof MaterialEditText) ;
-        MaterialEditText failed = (MaterialEditText) failedView;
-        failed.requestFocus();
-        failed.setError(getText(R.string.required_field));
+        // При ошибке валидации выводит сообщение о ошибке
+        if (failedView instanceof MaterialEditText) {
+            MaterialEditText failed = (MaterialEditText) failedView;
+            failed.requestFocus();
+            failed.setError(getText(R.string.required_field));
+        }
     }
 }
 

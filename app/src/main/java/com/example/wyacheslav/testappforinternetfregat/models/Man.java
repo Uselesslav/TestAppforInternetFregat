@@ -2,13 +2,19 @@ package com.example.wyacheslav.testappforinternetfregat.models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.text.format.DateUtils;
 
+import com.example.wyacheslav.testappforinternetfregat.R;
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Calendar;
+import java.util.Random;
 
 /**
  * Класс человека
@@ -56,7 +62,7 @@ public class Man {
     @DatabaseField(dataType = DataType.STRING)
     private String Address;
     @DatabaseField(dataType = DataType.STRING)
-    private String Photo;
+    private String pathToBitmap;
     @DatabaseField(dataType = DataType.INTEGER)
     private int numberOfBrooms;
 
@@ -67,6 +73,10 @@ public class Man {
     }
 
     public Man(Context context) {
+        this.context = context;
+    }
+
+    public void setContext(Context context) {
         this.context = context;
     }
 
@@ -114,21 +124,12 @@ public class Man {
         Address = address;
     }
 
-    public String getPhoto() {
-        return Photo;
+    public String getPathToBitmap() {
+        return pathToBitmap;
     }
 
-    public void setPhoto(String photo) {
-        Photo = photo;
-    }
-
-    public Bitmap getBitmapIcon() {
-        // TODO: доработать метод
-        Bitmap bitmap = null;
-        if (bitmap == null) {
-            //  bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
-        }
-        return bitmap;
+    public void setPathToBitmap(String pathToBitmap) {
+        this.pathToBitmap = pathToBitmap;
     }
 
     public int getNumberOfBroomsInt() {
@@ -153,5 +154,68 @@ public class Man {
 
     public long getTimeInMillisecond() {
         return Long.valueOf(timeInMillisecond);
+    }
+
+
+    /**
+     * Сохранение картинки на внутреннее хранилище
+     *
+     * @param bitmap - картинка
+     * @return - путь к файлу
+     */
+    public String saveIconBitmap(Bitmap bitmap) {
+        // Путь
+        String path = null;
+
+        if (bitmap != null) {
+            // Путь к хранилищу
+            String root = Environment.getExternalStorageDirectory().toString();
+
+            // Создание папки
+            File myDir = new File(root + "/saved_images");
+            myDir.mkdirs();
+
+            // Создание названия
+            Random generator = new Random();
+            int n = 10000;
+            n = generator.nextInt(n);
+            String fileName = "Image-" + n + ".jpg";
+
+            // Создание файла
+            File file = new File(myDir, fileName);
+            if (file.exists()) file.delete();
+
+            // Сохранение картинки
+            try {
+                FileOutputStream out = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                out.flush();
+                out.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            // Путь
+            path = root + "/saved_images/" + fileName;
+        }
+
+        return path;
+    }
+
+    /**
+     * ВОзвращает иконку пользователя из внутреннего хранилища
+     *
+     * @return - иконка
+     */
+    public Bitmap getIconBitmap() {
+        Bitmap bitmap = null;
+        if (getPathToBitmap() == null) {
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+        } else {
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            bitmap = BitmapFactory.decodeFile(getPathToBitmap(), options);
+        }
+        return bitmap;
     }
 }

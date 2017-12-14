@@ -1,5 +1,6 @@
 package com.example.wyacheslav.testappforinternetfregat.adapters;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
@@ -27,13 +28,19 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
     private List<Man> mManModels;
 
     /**
+     * Контекст
+     */
+    private Context mContext;
+
+    /**
      * Менеджер фрагментов
      */
     private FragmentManager mFragmentManager;
 
-    public RecyclerViewListManAdapter(List<Man> manModels, FragmentManager fragmentManager) {
+    public RecyclerViewListManAdapter(List<Man> manModels, FragmentManager fragmentManager, Context context) {
         mManModels = manModels;
         mFragmentManager = fragmentManager;
+        mContext = context;
     }
 
     @Override
@@ -45,11 +52,14 @@ public class RecyclerViewListManAdapter extends RecyclerView.Adapter<RecyclerVie
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
+        // TODO исправить колхоз
+        mManModels.get(position).setContext(mContext);
+
         // Заполнение текстового поля элемента
         holder.getTextViewFullName().setText(mManModels.get(position).getFullName());
 
         // Заполнение картинки
-        holder.getCircleImageViewIconMan().setImageBitmap(mManModels.get(position).getBitmapIcon());
+        holder.getCircleImageViewIconMan().setImageBitmap(mManModels.get(position).getIconBitmap());
 
         // Обработчик нажатия на элемент
         holder.itemView.setOnClickListener(new View.OnClickListener() {

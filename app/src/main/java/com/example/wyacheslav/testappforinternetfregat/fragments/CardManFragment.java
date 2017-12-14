@@ -3,6 +3,7 @@ package com.example.wyacheslav.testappforinternetfregat.fragments;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -68,6 +69,11 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
     private Man mMan;
 
     /**
+     * Картинка пользователя
+     */
+    private Bitmap mBitmapIcon = null;
+
+    /**
      * Поля ввода
      */
     @Required(order = 1)
@@ -102,6 +108,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         // Создание человека из ДАО объекта
         try {
             mMan = HelperFactory.getHelper().getInstanceManDAO().getManByID(position);
+            mMan.setContext(mContext);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -130,6 +137,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         mMaterialEditTextPatronymic.setText(mMan.getPatronymic());
         mMaterialEditTextAddress.setText(mMan.getAddress());
         mMaterialEditTextNumberOfBroom.setText(mMan.getNumberOfBroomsString());
+        mImageViewIconProfile.setImageBitmap(mMan.getIconBitmap());
 
         // Обработка нажатия на текстовое поле
         textViewDOB.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +194,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SetIconEvent event) {
         mImageViewIconProfile.setImageBitmap(event.getBitmapIcon());
+        mBitmapIcon = event.getBitmapIcon();
     }
 
     @Override
@@ -197,8 +206,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         mMan.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
         mMan.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
         mMan.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
-        // TODO: Добавить обработку
-        mMan.setPhoto("fff");
+        mMan.setPathToBitmap(mMan.saveIconBitmap(mBitmapIcon));
 
         // Создание ДАО человека, для сохранение в БД
         try {

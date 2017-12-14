@@ -65,7 +65,7 @@ public class ListManFragment extends Fragment {
         final EditText editTextFind = rootView.findViewById(R.id.et_find);
 
         // Инициализация адаптера
-        mRecyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager());
+        mRecyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager(), getContext());
 
         // FAB добавления человека
         FloatingActionButton floatingActionButtonAddMan = rootView.findViewById(R.id.fab_add_man);

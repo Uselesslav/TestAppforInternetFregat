@@ -3,6 +3,7 @@ package com.example.wyacheslav.testappforinternetfregat.fragments;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -53,9 +54,14 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     private ImageView mImageViewIconProfile;
 
     /**
-     * Картинка пользователя
+     * Контекст
      */
     private Context mContext;
+
+    /**
+     * Картинка пользователя
+     */
+    private Bitmap mBitmapIcon = null;
 
     /**
      * Поля ввода
@@ -159,6 +165,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     public void onMessageEvent(SetIconEvent event) {
         // ПРи срабатывании события получит картинку
         mImageViewIconProfile.setImageBitmap(event.getBitmapIcon());
+        mBitmapIcon = event.getBitmapIcon();
     }
 
     @Override
@@ -173,8 +180,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         man.setSecondName(mMaterialEditTextSecondName.getText().toString());
         man.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
         man.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
-        // TODO: Добавить обработку
-        man.setPhoto("fff");
+        man.setPathToBitmap(man.saveIconBitmap(mBitmapIcon));
 
         // Создание ДАО человека, для сохранение в БД
         try {

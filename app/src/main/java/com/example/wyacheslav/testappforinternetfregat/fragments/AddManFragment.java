@@ -168,7 +168,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
 
         // Заполнение информацией из полей
         man.setAddress(mMaterialEditTextAddress.getText().toString());
-        man.setDateOfBirth(mCalendarDateOfBirth.toString());
+        man.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
         man.setName(mMaterialEditTextName.getText().toString());
         man.setSecondName(mMaterialEditTextSecondName.getText().toString());
         man.setPatronymic(mMaterialEditTextPatronymic.getText().toString());

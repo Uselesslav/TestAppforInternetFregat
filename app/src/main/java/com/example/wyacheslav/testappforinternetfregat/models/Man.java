@@ -2,6 +2,7 @@ package com.example.wyacheslav.testappforinternetfregat.models;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.format.DateUtils;
 
 import com.j256.ormlite.field.DataType;
 import com.j256.ormlite.field.DatabaseField;
@@ -51,7 +52,7 @@ public class Man {
     @DatabaseField(dataType = DataType.STRING, columnName = MAN_NAME_FIELD_PATRONYMIC)
     private String patronymic;
     @DatabaseField(dataType = DataType.STRING)
-    private String dateOfBirth;
+    private String timeInMillisecond;
     @DatabaseField(dataType = DataType.STRING)
     private String Address;
     @DatabaseField(dataType = DataType.STRING)
@@ -102,11 +103,7 @@ public class Man {
     }
 
     public String getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(String dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        return DateUtils.formatDateTime(context, calendarDoB.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
     }
 
     public String getAddress() {
@@ -148,5 +145,13 @@ public class Man {
 
     private String isNullString(String string) {
         return string == null ? "" : string;
+    }
+
+    public void setTimeInMillisecond(long timeInMillisecond) {
+        this.timeInMillisecond = String.valueOf(timeInMillisecond);
+    }
+
+    public long getTimeInMillisecond() {
+        return Long.valueOf(timeInMillisecond);
     }
 }

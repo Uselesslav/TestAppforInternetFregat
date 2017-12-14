@@ -192,11 +192,11 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
     public void onValidationSucceeded() {
         // Заполнение информацией из полей
         mMan.setAddress(mMaterialEditTextAddress.getText().toString());
-        mMan.setDateOfBirth(mCalendarDateOfBirth.toString());
         mMan.setName(mMaterialEditTextName.getText().toString());
         mMan.setSecondName(mMaterialEditTextSecondName.getText().toString());
         mMan.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
         mMan.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
+        mMan.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
         // TODO: Добавить обработку
         mMan.setPhoto("fff");
 

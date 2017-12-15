@@ -112,8 +112,16 @@ public class Man {
         this.patronymic = patronymic;
     }
 
+    /**
+     * @return - строка с датой рождения
+     */
     public String getDateOfBirth() {
-        return DateUtils.formatDateTime(context, calendarDoB.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+        // Если меньше нуля, то сообщение о вводе, если больше, то дата
+        String dob = context.getResources().getString(R.string.imput_date);
+        if (getTimeInMillisecond() > 0) {
+            dob = DateUtils.formatDateTime(context, getTimeInMillisecond(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
+        }
+        return dob;
     }
 
     public String getAddress() {
@@ -148,6 +156,10 @@ public class Man {
         return string == null ? "" : string;
     }
 
+    /**
+     * Ввод значения даты рождения в миллисекундах
+     * Если 0, то в ответ придет строка с сообщением о вводе даты
+     */
     public void setTimeInMillisecond(long timeInMillisecond) {
         this.timeInMillisecond = String.valueOf(timeInMillisecond);
     }

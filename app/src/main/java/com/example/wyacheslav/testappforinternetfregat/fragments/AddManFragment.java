@@ -101,6 +101,9 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         // Подписка на события
         EventBus.getDefault().register(this);
 
+        // Установление времени на календаре
+        mCalendarDateOfBirth.setTimeInMillis(0);
+
         // Поля ввода
         final TextView textViewDOB = rootView.findViewById(R.id.tv_dob);
         final Button buttonAdd = rootView.findViewById(R.id.button_add);
@@ -175,12 +178,12 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
 
         // Заполнение информацией из полей
         man.setAddress(mMaterialEditTextAddress.getText().toString());
-        man.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
         man.setName(mMaterialEditTextName.getText().toString());
         man.setSecondName(mMaterialEditTextSecondName.getText().toString());
         man.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
         man.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
         man.setPathToBitmap(man.saveIconBitmap(mBitmapIcon));
+        man.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
 
         // Создание ДАО человека, для сохранение в БД
         try {

@@ -152,7 +152,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
                         mCalendarDateOfBirth.set(Calendar.MONTH, mouth);
                         mCalendarDateOfBirth.set(Calendar.DAY_OF_MONTH, day);
 
-                        // Обновление текста
+                        mMan.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
                         textViewDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                     }
                 }, mCalendarDateOfBirth.get(Calendar.YEAR), mCalendarDateOfBirth.get(Calendar.MONTH), mCalendarDateOfBirth.get(Calendar.DAY_OF_MONTH));
@@ -205,7 +205,6 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         mMan.setSecondName(mMaterialEditTextSecondName.getText().toString());
         mMan.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
         mMan.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
-        mMan.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
         mMan.setPathToBitmap(mMan.saveIconBitmap(mBitmapIcon));
 
         // Создание ДАО человека, для сохранение в БД

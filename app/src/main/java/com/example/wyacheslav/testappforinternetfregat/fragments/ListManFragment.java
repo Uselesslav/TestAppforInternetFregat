@@ -118,6 +118,8 @@ public class ListManFragment extends Fragment {
                 if (mManModelsList.isEmpty()) {
                     textViewEmptyList.setVisibility(View.VISIBLE);
                     textViewEmptyList.setText(R.string.not_find_result);
+                } else {
+                    textViewEmptyList.setVisibility(View.GONE);
                 }
 
                 // Обновление списка

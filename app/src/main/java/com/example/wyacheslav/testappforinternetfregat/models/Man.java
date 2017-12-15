@@ -137,7 +137,9 @@ public class Man {
     }
 
     public void setPathToBitmap(String pathToBitmap) {
-        this.pathToBitmap = pathToBitmap;
+        if (pathToBitmap != null) {
+            this.pathToBitmap = pathToBitmap;
+        }
     }
 
     public int getNumberOfBroomsInt() {

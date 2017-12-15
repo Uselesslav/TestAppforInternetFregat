@@ -113,7 +113,7 @@
             android:layout_gravity="right"
             android:layout_marginBottom="32dp"
             android:gravity="center"
-            android:text="@string/edit"
+            android:text="@string/save"
             tools:ignore="RtlHardcoded" />
     </LinearLayout>
 </ScrollView>

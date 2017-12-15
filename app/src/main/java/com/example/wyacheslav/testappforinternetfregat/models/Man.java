@@ -222,7 +222,7 @@ public class Man {
     public Bitmap getIconBitmap() {
         Bitmap bitmap = null;
         if (getPathToBitmap() == null) {
-            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+            bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_profile);
         } else {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;

@@ -12,6 +12,7 @@
     <string name="user_card_input_dob">Введите дату рождения</string>
     <string name="user_card_photo">Фото:</string>
     <string name="user_card_number_of_brooms">Количество веников:</string>
+    <string name="info_about_permission">Для полноценной работы приложения необходимо принять соглашение</string>
     <string name="imput_date">нажмите для ввода даты</string>
     <string name="save">Сохранить</string>
     <string name="empty_list">Список пуст</string>

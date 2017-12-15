@@ -1,12 +1,16 @@
 package com.example.wyacheslav.testappforinternetfregat.fragments;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -89,7 +93,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Создаваемый View
-        View rootView = inflater.inflate(R.layout.fragment_add_man, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_card_man, container, false);
 
         // Инициализация валидатора
         mValidator = new Validator(this);
@@ -106,8 +110,13 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
 
         // Поля ввода
         final TextView textViewDOB = rootView.findViewById(R.id.tv_dob);
-        final Button buttonAdd = rootView.findViewById(R.id.button_add);
+        final Button buttonAdd = rootView.findViewById(R.id.button_add_edit);
+        buttonAdd.setText(R.string.add);
         mImageViewIconProfile = rootView.findViewById(R.id.iv_icon);
+        // Проверка получено ли разрешение на работу с внешним хранилищем
+        if (!(ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            mImageViewIconProfile.setVisibility(View.GONE);
+        }
         mMaterialEditTextName = rootView.findViewById(R.id.et_name);
         mMaterialEditTextSecondName = rootView.findViewById(R.id.et_second_name);
         mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
@@ -118,6 +127,9 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         textViewDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Текущая дата
+                Calendar calendarToday = Calendar.getInstance();
+
                 mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int mouth, int day) {
@@ -129,7 +141,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
                         // Обновление текста
                         textViewDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                     }
-                }, mCalendarDateOfBirth.get(Calendar.YEAR), mCalendarDateOfBirth.get(Calendar.MONTH), mCalendarDateOfBirth.get(Calendar.DAY_OF_MONTH));
+                }, calendarToday.get(Calendar.YEAR), calendarToday.get(Calendar.MONTH), calendarToday.get(Calendar.DAY_OF_MONTH));
                 // Показывает диалоговое окно
                 mDatePickerDialog.show();
             }

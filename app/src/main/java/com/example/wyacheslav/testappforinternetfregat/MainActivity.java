@@ -2,10 +2,13 @@ package com.example.wyacheslav.testappforinternetfregat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.wyacheslav.testappforinternetfregat.events.SetIconEvent;
 import com.example.wyacheslav.testappforinternetfregat.fragments.ListManFragment;
@@ -15,6 +18,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
+    /**
+     * Код ответа
+     */
+    public static final int REQUEST_WRITE_STORAGE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,5 +58,28 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("TAG", "Some exception " + e);
             }
         }
+    }
+
+
+    /**
+     * Обработка изменения соглашений
+     *
+     * @param requestCode  - ответ
+     * @param permissions  - соглашение
+     * @param grantResults - результат
+     */
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // Проверка принятого соглашения
+        switch (requestCode) {
+            case REQUEST_WRITE_STORAGE: {
+                // Если соглашение отклонено, вывод сообщения с информацией
+                if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    Toast.makeText(this, getString(R.string.info_about_permission), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
     }
 }

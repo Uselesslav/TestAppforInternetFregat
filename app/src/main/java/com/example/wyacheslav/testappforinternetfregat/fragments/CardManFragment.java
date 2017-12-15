@@ -1,12 +1,16 @@
 package com.example.wyacheslav.testappforinternetfregat.fragments;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -122,8 +126,13 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
 
         // Поля ввода
         final TextView textViewDOB = rootView.findViewById(R.id.tv_dob);
-        final Button buttonEdit = rootView.findViewById(R.id.button_edit);
+        final Button buttonEdit = rootView.findViewById(R.id.button_add_edit);
+        buttonEdit.setText(R.string.save);
         mImageViewIconProfile = rootView.findViewById(R.id.iv_icon);
+        // Проверка получено ли разрешение на работу с внешним хранилищем
+        if (!(ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            mImageViewIconProfile.setVisibility(View.GONE);
+        }
         mMaterialEditTextName = rootView.findViewById(R.id.et_name);
         mMaterialEditTextSecondName = rootView.findViewById(R.id.et_second_name);
         mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
@@ -143,6 +152,15 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         textViewDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Текущая дата
+                Calendar calendarToday = Calendar.getInstance();
+
+                // Заполнение старым значением
+                mCalendarDateOfBirth.setTimeInMillis(mMan.getTimeInMillisecond());
+
+                // Выбор значения
+                calendarToday = mCalendarDateOfBirth.getTimeInMillis() > 0 ? mCalendarDateOfBirth : calendarToday;
+
                 // Создание диалогового окна с выбором даты
                 mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
@@ -155,7 +173,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
                         mMan.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
                         textViewDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                     }
-                }, mCalendarDateOfBirth.get(Calendar.YEAR), mCalendarDateOfBirth.get(Calendar.MONTH), mCalendarDateOfBirth.get(Calendar.DAY_OF_MONTH));
+                }, calendarToday.get(Calendar.YEAR), calendarToday.get(Calendar.MONTH), calendarToday.get(Calendar.DAY_OF_MONTH));
 
                 // Открытие диалогового окна
                 mDatePickerDialog.show();

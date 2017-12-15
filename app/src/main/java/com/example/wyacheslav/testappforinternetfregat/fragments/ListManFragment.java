@@ -1,9 +1,14 @@
 package com.example.wyacheslav.testappforinternetfregat.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.wyacheslav.testappforinternetfregat.MainActivity;
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.adapters.RecyclerViewListManAdapter;
 import com.example.wyacheslav.testappforinternetfregat.database.HelperFactory;
@@ -126,6 +132,12 @@ public class ListManFragment extends Fragment {
                 mRecyclerViewClientAdapter.notifyDataSetChanged();
             }
         });
+
+        // Проверка получено ли разрешение на работу с внешним хранилищем
+        if (!(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+            // Если нет, то запрос разрешения
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
+        }
 
         return rootView;
     }

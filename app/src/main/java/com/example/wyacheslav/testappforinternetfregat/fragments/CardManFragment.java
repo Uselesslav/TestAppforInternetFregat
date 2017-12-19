@@ -82,11 +82,10 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
      */
     @Required(order = 1)
     private MaterialEditText mMaterialEditTextName;
-    @Required(order = 1)
+    @Required(order = 2)
     private MaterialEditText mMaterialEditTextSecondName;
-    @Required(order = 1)
+    @Required(order = 3)
     private MaterialEditText mMaterialEditTextNumberOfBroom;
-    @Required(order = 1)
     private MaterialEditText mMaterialEditTextAddress;
     private MaterialEditText mMaterialEditTextPatronymic;
 

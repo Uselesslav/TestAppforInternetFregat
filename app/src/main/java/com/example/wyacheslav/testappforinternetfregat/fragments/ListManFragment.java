@@ -15,7 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.MainActivity;
@@ -67,8 +67,7 @@ public class ListManFragment extends Fragment {
         final TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
 
         // Поле ввода и кнопка для поиска
-        TextView textViewFind = rootView.findViewById(R.id.tv_find);
-        final EditText editTextFind = rootView.findViewById(R.id.et_find);
+        final SearchView searchView = rootView.findViewById(R.id.sv_man);
 
         // Инициализация адаптера
         mRecyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager(), getContext());
@@ -100,10 +99,15 @@ public class ListManFragment extends Fragment {
             }
         });
 
-        // Обработчик нажатия на кнопку "Найти"
-        textViewFind.setOnClickListener(new View.OnClickListener() {
+        // Обработчик ввода текста в поле поиска
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void onClick(View v) {
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
                 // Отчистка массива
                 mManModelsList.clear();
 
@@ -113,9 +117,7 @@ public class ListManFragment extends Fragment {
                             .addAll(HelperFactory
                                     .getHelper()
                                     .getInstanceManDAO()
-                                    .getManByName(editTextFind
-                                            .getText()
-                                            .toString()));
+                                    .getManByName(searchView.getQuery().toString()));
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
@@ -130,6 +132,7 @@ public class ListManFragment extends Fragment {
 
                 // Обновление списка
                 mRecyclerViewClientAdapter.notifyDataSetChanged();
+                return false;
             }
         });
 

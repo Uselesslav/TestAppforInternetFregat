@@ -8,26 +8,11 @@
     android:focusable="true"
     android:orientation="vertical">
 
-    <LinearLayout
+    <SearchView
+        android:id="@+id/sv_man"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/et_find"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:lines="1" />
-
-        <TextView
-            android:id="@+id/tv_find"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
-            android:gravity="center"
-            android:text="@string/find" />
-    </LinearLayout>
+        android:queryHint="@string/find"/>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"

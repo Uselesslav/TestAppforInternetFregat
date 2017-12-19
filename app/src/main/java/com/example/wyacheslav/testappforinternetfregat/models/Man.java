@@ -117,7 +117,7 @@ public class Man {
      */
     public String getDateOfBirth() {
         // Если меньше нуля, то сообщение о вводе, если больше, то дата
-        String dob = context.getResources().getString(R.string.imput_date);
+        String dob = null;
         if (getTimeInMillisecond() > 0) {
             dob = DateUtils.formatDateTime(context, getTimeInMillisecond(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR);
         }

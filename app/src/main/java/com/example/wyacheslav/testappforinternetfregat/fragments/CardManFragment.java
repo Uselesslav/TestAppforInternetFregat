@@ -19,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.database.HelperFactory;
@@ -124,7 +123,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         EventBus.getDefault().register(this);
 
         // Поля ввода
-        final TextView textViewDOB = rootView.findViewById(R.id.tv_dob);
+        final MaterialEditText materialEditTextDOB = rootView.findViewById(R.id.et_dob);
         final Button buttonEdit = rootView.findViewById(R.id.button_add_edit);
         buttonEdit.setText(R.string.save);
         mImageViewIconProfile = rootView.findViewById(R.id.iv_icon);
@@ -139,7 +138,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         mMaterialEditTextNumberOfBroom = rootView.findViewById(R.id.et_number_of_brooms);
 
         // Заполнение полей
-        textViewDOB.setText(mMan.getDateOfBirth());
+        materialEditTextDOB.setText(mMan.getDateOfBirth());
         mMaterialEditTextName.setText(mMan.getName());
         mMaterialEditTextSecondName.setText(mMan.getSecondName());
         mMaterialEditTextPatronymic.setText(mMan.getPatronymic());
@@ -148,7 +147,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         mImageViewIconProfile.setImageBitmap(mMan.getIconBitmap());
 
         // Обработка нажатия на текстовое поле
-        textViewDOB.setOnClickListener(new View.OnClickListener() {
+        materialEditTextDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Текущая дата
@@ -170,7 +169,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
                         mCalendarDateOfBirth.set(Calendar.DAY_OF_MONTH, day);
 
                         mMan.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
-                        textViewDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                        materialEditTextDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                     }
                 }, calendarToday.get(Calendar.YEAR), calendarToday.get(Calendar.MONTH), calendarToday.get(Calendar.DAY_OF_MONTH));
 

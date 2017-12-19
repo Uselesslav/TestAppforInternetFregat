@@ -19,7 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.database.HelperFactory;
@@ -108,7 +107,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         mCalendarDateOfBirth.setTimeInMillis(0);
 
         // Поля ввода
-        final TextView textViewDOB = rootView.findViewById(R.id.tv_dob);
+        final MaterialEditText materialEditTextDOB = rootView.findViewById(R.id.et_dob);
         final Button buttonAdd = rootView.findViewById(R.id.button_add_edit);
         buttonAdd.setText(R.string.add);
         mImageViewIconProfile = rootView.findViewById(R.id.iv_icon);
@@ -123,7 +122,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         mMaterialEditTextNumberOfBroom = rootView.findViewById(R.id.et_number_of_brooms);
 
         // Обработка нажатия на текстовое поле
-        textViewDOB.setOnClickListener(new View.OnClickListener() {
+        materialEditTextDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Текущая дата
@@ -138,7 +137,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
                         mCalendarDateOfBirth.set(Calendar.DAY_OF_MONTH, day);
 
                         // Обновление текста
-                        textViewDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                        materialEditTextDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                     }
                 }, calendarToday.get(Calendar.YEAR), calendarToday.get(Calendar.MONTH), calendarToday.get(Calendar.DAY_OF_MONTH));
                 // Показывает диалоговое окно

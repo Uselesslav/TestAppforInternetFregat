@@ -85,7 +85,6 @@
             android:text="@string/user_card_address"
             android:textSize="20sp" />
 
-
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/et_address"
             android:layout_width="match_parent"
@@ -99,12 +98,11 @@
             android:text="@string/user_card_date_of_birth"
             android:textSize="20sp" />
 
-        <TextView
-            android:id="@+id/tv_dob"
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/et_dob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="@string/user_card_input_dob"
+            android:focusable="false"
             android:textStyle="bold" />
 
         <Button

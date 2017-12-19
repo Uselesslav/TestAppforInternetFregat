@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
@@ -27,7 +28,6 @@ import com.example.wyacheslav.testappforinternetfregat.models.Man;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Required;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -54,7 +54,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     /**
      * Картинка пользователя
      */
-    private ImageView mImageViewIconProfile;
+    private ImageView mImageViewIcon;
 
     /**
      * Контекст
@@ -70,13 +70,13 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
      * Поля ввода
      */
     @Required(order = 1)
-    private MaterialEditText mMaterialEditTextName;
+    private TextInputEditText mEditTextName;
     @Required(order = 2)
-    private MaterialEditText mMaterialEditTextSecondName;
+    private TextInputEditText mEditTextSecondName;
     @Required(order = 3)
-    private MaterialEditText mMaterialEditTextNumberOfBroom;
-    private MaterialEditText mMaterialEditTextAddress;
-    private MaterialEditText mMaterialEditTextPatronymic;
+    private TextInputEditText mEditTextNumberOfBroom;
+    private TextInputEditText mEditTextAddress;
+    private TextInputEditText mEditTextPatronymic;
 
     /**
      * Валидатор
@@ -107,22 +107,22 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         mCalendarDateOfBirth.setTimeInMillis(0);
 
         // Поля ввода
-        final MaterialEditText materialEditTextDOB = rootView.findViewById(R.id.et_dob);
+        final TextInputEditText editTextDOB = rootView.findViewById(R.id.et_dob);
         final Button buttonAdd = rootView.findViewById(R.id.button_add_edit);
         buttonAdd.setText(R.string.add);
-        mImageViewIconProfile = rootView.findViewById(R.id.iv_icon);
+        mImageViewIcon = rootView.findViewById(R.id.iv_icon);
         // Проверка получено ли разрешение на работу с внешним хранилищем
         if (!(ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
-            mImageViewIconProfile.setVisibility(View.GONE);
+            mImageViewIcon.setVisibility(View.GONE);
         }
-        mMaterialEditTextName = rootView.findViewById(R.id.et_name);
-        mMaterialEditTextSecondName = rootView.findViewById(R.id.et_second_name);
-        mMaterialEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
-        mMaterialEditTextAddress = rootView.findViewById(R.id.et_address);
-        mMaterialEditTextNumberOfBroom = rootView.findViewById(R.id.et_number_of_brooms);
+        mEditTextName = rootView.findViewById(R.id.et_name);
+        mEditTextSecondName = rootView.findViewById(R.id.et_second_name);
+        mEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
+        mEditTextAddress = rootView.findViewById(R.id.et_address);
+        mEditTextNumberOfBroom = rootView.findViewById(R.id.et_number_of_brooms);
 
         // Обработка нажатия на текстовое поле
-        materialEditTextDOB.setOnClickListener(new View.OnClickListener() {
+        editTextDOB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Текущая дата
@@ -137,7 +137,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
                         mCalendarDateOfBirth.set(Calendar.DAY_OF_MONTH, day);
 
                         // Обновление текста
-                        materialEditTextDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
+                        editTextDOB.setText(DateUtils.formatDateTime(getActivity(), mCalendarDateOfBirth.getTimeInMillis(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_YEAR));
                     }
                 }, calendarToday.get(Calendar.YEAR), calendarToday.get(Calendar.MONTH), calendarToday.get(Calendar.DAY_OF_MONTH));
                 // Показывает диалоговое окно
@@ -146,7 +146,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         });
 
         // Обработка нажатия на иконку профиля
-        mImageViewIconProfile.setOnClickListener(new View.OnClickListener() {
+        mImageViewIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Открытие активити выбора фото
@@ -177,7 +177,7 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(SetIconEvent event) {
         // ПРи срабатывании события получит картинку
-        mImageViewIconProfile.setImageBitmap(event.getBitmapIcon());
+        mImageViewIcon.setImageBitmap(event.getBitmapIcon());
         mBitmapIcon = event.getBitmapIcon();
     }
 
@@ -187,11 +187,11 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
         Man man = new Man(mContext);
 
         // Заполнение информацией из полей
-        man.setAddress(mMaterialEditTextAddress.getText().toString());
-        man.setName(mMaterialEditTextName.getText().toString());
-        man.setSecondName(mMaterialEditTextSecondName.getText().toString());
-        man.setPatronymic(mMaterialEditTextPatronymic.getText().toString());
-        man.setNumberOfBrooms(Integer.parseInt(mMaterialEditTextNumberOfBroom.getText().toString()));
+        man.setAddress(mEditTextAddress.getText().toString());
+        man.setName(mEditTextName.getText().toString());
+        man.setSecondName(mEditTextSecondName.getText().toString());
+        man.setPatronymic(mEditTextPatronymic.getText().toString());
+        man.setNumberOfBrooms(Integer.parseInt(mEditTextNumberOfBroom.getText().toString()));
         man.setPathToBitmap(man.saveIconBitmap(mBitmapIcon));
         man.setTimeInMillisecond(mCalendarDateOfBirth.getTimeInMillis());
 
@@ -216,11 +216,9 @@ public class AddManFragment extends Fragment implements Validator.ValidationList
     @Override
     public void onValidationFailed(View failedView, Rule<?> failedRule) {
         // При ошибке валидации выводит сообщение о ошибке
-        if (failedView instanceof MaterialEditText) {
-            MaterialEditText failed = (MaterialEditText) failedView;
-            failed.requestFocus();
-            failed.setError(getText(R.string.required_field));
-        }
+        TextInputEditText failed = (TextInputEditText) failedView;
+        failed.requestFocus();
+        failed.setError(getText(R.string.required_field));
     }
 }
 

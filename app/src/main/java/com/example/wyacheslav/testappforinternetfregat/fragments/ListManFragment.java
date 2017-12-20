@@ -32,7 +32,7 @@ import java.util.List;
  * Фрагмент со списком людей
  * Created by bonda on 11.12.2017.
  */
-public class ListManFragment extends Fragment {
+public class ListManFragment extends Fragment implements SearchView.OnQueryTextListener {
     /**
      * Массив людей
      */
@@ -42,6 +42,11 @@ public class ListManFragment extends Fragment {
      * Адаптер списка
      */
     private RecyclerViewListManAdapter mRecyclerViewClientAdapter;
+
+    /**
+     * Информационная строка
+     */
+    private TextView mTextViewEmptyList;
 
     /**
      * Переопределение метода родительского класса
@@ -63,11 +68,10 @@ public class ListManFragment extends Fragment {
             e.printStackTrace();
         }
 
-        // Информационная строка
-        final TextView textViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
-
-        // Поле ввода и кнопка для поиска
-        final SearchView searchView = rootView.findViewById(R.id.sv_man);
+        // Информационная строка и поле поиска
+        mTextViewEmptyList = rootView.findViewById(R.id.tv_empty_list);
+        SearchView searchView = rootView.findViewById(R.id.sv_man);
+        searchView.setOnQueryTextListener(this);
 
         // Инициализация адаптера
         mRecyclerViewClientAdapter = new RecyclerViewListManAdapter(mManModelsList, getFragmentManager(), getContext());
@@ -77,8 +81,6 @@ public class ListManFragment extends Fragment {
 
         // Список
         RecyclerView recyclerViewMans = rootView.findViewById(R.id.rv_mans);
-
-        // Настройка списка
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         recyclerViewMans.setAdapter(mRecyclerViewClientAdapter);
@@ -87,7 +89,7 @@ public class ListManFragment extends Fragment {
 
         // Если список пуст, будет выведена строка
         if (mManModelsList.isEmpty()) {
-            textViewEmptyList.setVisibility(View.VISIBLE);
+            mTextViewEmptyList.setVisibility(View.VISIBLE);
         }
 
         // Обработчик нажатия на кнопку добавить человека
@@ -99,43 +101,6 @@ public class ListManFragment extends Fragment {
             }
         });
 
-        // Обработчик ввода текста в поле поиска
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                // Отчистка массива
-                mManModelsList.clear();
-
-                // Заполнение массива из БД
-                try {
-                    mManModelsList
-                            .addAll(HelperFactory
-                                    .getHelper()
-                                    .getInstanceManDAO()
-                                    .getManByName(searchView.getQuery().toString()));
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-
-                // Если не найдено соответствий - вывод сообщения
-                if (mManModelsList.isEmpty()) {
-                    textViewEmptyList.setVisibility(View.VISIBLE);
-                    textViewEmptyList.setText(R.string.not_find_result);
-                } else {
-                    textViewEmptyList.setVisibility(View.GONE);
-                }
-
-                // Обновление списка
-                mRecyclerViewClientAdapter.notifyDataSetChanged();
-                return false;
-            }
-        });
-
         // Проверка получено ли разрешение на работу с внешним хранилищем
         if (!(ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
             // Если нет, то запрос разрешения
@@ -143,5 +108,39 @@ public class ListManFragment extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        // Отчистка массива
+        mManModelsList.clear();
+
+        // Заполнение массива из БД
+        try {
+            mManModelsList
+                    .addAll(HelperFactory
+                            .getHelper()
+                            .getInstanceManDAO()
+                            .getManByName(s));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        // Если не найдено соответствий - вывод сообщения
+        if (mManModelsList.isEmpty()) {
+            mTextViewEmptyList.setVisibility(View.VISIBLE);
+            mTextViewEmptyList.setText(R.string.not_find_result);
+        } else {
+            mTextViewEmptyList.setVisibility(View.GONE);
+        }
+
+        // Обновление списка
+        mRecyclerViewClientAdapter.notifyDataSetChanged();
+        return false;
     }
 }

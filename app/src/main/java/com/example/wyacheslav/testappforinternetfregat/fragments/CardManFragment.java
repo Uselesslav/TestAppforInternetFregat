@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -17,7 +18,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 
@@ -124,8 +124,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
 
         // Поля ввода
         final TextInputEditText editTextDOB = rootView.findViewById(R.id.et_dob);
-        final Button buttonEdit = rootView.findViewById(R.id.button_add_edit);
-        buttonEdit.setText(R.string.save);
+        final FloatingActionButton floatingActionButtonEdit = rootView.findViewById(R.id.fab_add_edit);
         mImageViewIcon = rootView.findViewById(R.id.iv_icon);
         // Проверка получено ли разрешение на работу с внешним хранилищем
         if (!(ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
@@ -190,7 +189,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         });
 
         // Обработка нажатия на кнопку
-        buttonEdit.setOnClickListener(new View.OnClickListener() {
+        floatingActionButtonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mValidator.validate();

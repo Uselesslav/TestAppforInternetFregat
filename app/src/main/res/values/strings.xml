@@ -19,4 +19,7 @@
     <string name="add">Добавить</string>
     <string name="not_find_result">Не найдено результатов</string>
     <string name="required_field">Обязательное поле</string>
+    <string name="from_gallery">Загрозить из галереи</string>
+    <string name="from_camera">Использовать камеру</string>
+    <string name="close">Закрыть</string>
 </resources>

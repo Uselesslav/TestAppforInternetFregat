@@ -1,9 +1,9 @@
 package com.example.wyacheslav.testappforinternetfregat.fragments;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.format.DateUtils;
@@ -21,9 +22,11 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 
+import com.example.wyacheslav.testappforinternetfregat.MainActivity;
 import com.example.wyacheslav.testappforinternetfregat.R;
 import com.example.wyacheslav.testappforinternetfregat.database.HelperFactory;
 import com.example.wyacheslav.testappforinternetfregat.events.SetIconEvent;
+import com.example.wyacheslav.testappforinternetfregat.fragments.dialog.ChooseImageDialogFragment;
 import com.example.wyacheslav.testappforinternetfregat.models.Man;
 import com.mobsandgeeks.saripaar.Rule;
 import com.mobsandgeeks.saripaar.Validator;
@@ -45,6 +48,11 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
      * Диалоговое окно календаря
      */
     private DatePickerDialog mDatePickerDialog;
+
+    /**
+     * Диалоговое окно с выбором способа загрузки картинки
+     */
+    private ChooseImageDialogFragment mChooseImageDialogFragment;
 
     /**
      * Дата рождения
@@ -126,10 +134,14 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         final TextInputEditText editTextDOB = rootView.findViewById(R.id.et_dob);
         final FloatingActionButton floatingActionButtonEdit = rootView.findViewById(R.id.fab_add_edit);
         mImageViewIcon = rootView.findViewById(R.id.iv_icon);
-        // Проверка получено ли разрешение на работу с внешним хранилищем
-        if (!(ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
-            mImageViewIcon.setVisibility(View.GONE);
-        }
+
+//        // Проверка получено ли разрешение на работу с внешним хранилищем или использование камеры если это требуется данному устройству
+//        if ((android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                && !(ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) {
+//            // Отключение картинки
+//            mImageViewIcon.setVisibility(View.INVISIBLE);
+//        }
+
         mEditTextName = rootView.findViewById(R.id.et_name);
         mEditTextSecondName = rootView.findViewById(R.id.et_second_name);
         mEditTextPatronymic = rootView.findViewById(R.id.et_patronymic);
@@ -159,7 +171,7 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
                 calendarToday = mCalendarDateOfBirth.getTimeInMillis() > 0 ? mCalendarDateOfBirth : calendarToday;
 
                 // Создание диалогового окна с выбором даты
-                mDatePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                mDatePickerDialog = new DatePickerDialog(mContext, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int mouth, int day) {
                         // Сохранение даты
@@ -181,10 +193,15 @@ public class CardManFragment extends Fragment implements Validator.ValidationLis
         mImageViewIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Открытие активити для выбора фото
-                Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-                photoPickerIntent.setType("image/*");
-                startActivityForResult(photoPickerIntent, 1);
+                // Проверка получено ли разрешение на работу с внешним хранилищем
+                if (!(ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)) {
+                    // Если нет, то запрос разрешения
+                    ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, MainActivity.REQUEST_WRITE_STORAGE);
+                }    else {
+                    // Открытие диалогового окна
+                    mChooseImageDialogFragment = new ChooseImageDialogFragment();
+                    mChooseImageDialogFragment.show(getFragmentManager(), "ddd");
+                }
             }
         });
 

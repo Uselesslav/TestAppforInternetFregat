@@ -14,7 +14,7 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.Calendar;
-import java.util.Random;
+import java.util.Date;
 
 /**
  * Класс человека
@@ -190,10 +190,7 @@ public class Man {
             myDir.mkdirs();
 
             // Создание названия
-            Random generator = new Random();
-            int n = 10000;
-            n = generator.nextInt(n);
-            String fileName = "Image-" + n + ".jpg";
+            String fileName = "Image-" + new Date().getTime() + ".jpg";
 
             // Создание файла
             File file = new File(myDir, fileName);

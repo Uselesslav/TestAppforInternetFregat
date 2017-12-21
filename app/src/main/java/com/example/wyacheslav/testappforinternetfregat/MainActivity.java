@@ -3,6 +3,7 @@ package com.example.wyacheslav.testappforinternetfregat;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -51,11 +52,17 @@ public class MainActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            try {
+            // Проверка изображение с камеры или из галереи
+            if (data.getExtras() != null) {
                 // Создание события смены картинки
-                EventBus.getDefault().post(new SetIconEvent(MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData())));
-            } catch (IOException e) {
-                Log.i("TAG", "Some exception " + e);
+                EventBus.getDefault().post(new SetIconEvent((Bitmap) data.getExtras().get("data")));
+            } else {
+                try {
+                    // Создание события смены картинки
+                    EventBus.getDefault().post(new SetIconEvent(MediaStore.Images.Media.getBitmap(getContentResolver(), data.getData())));
+                } catch (IOException e) {
+                    Log.i("TAG", "Some exception " + e);
+                }
             }
         }
     }
